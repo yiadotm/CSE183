@@ -1,0 +1,51 @@
+.input-box [type="number"], .input-box [readonly] {
+    width: 250px;
+    height: 10px;
+    text-align: right;
+    margin-left: auto;
+    border-width: 2px;
+}
+
+.label {
+    font-weight: normal; 
+}
+
+.input-box label {
+    flex: 2;
+    margin-right: 1px;
+    text-align: right;
+}
+
+
+
+.input {
+    width: 100%;
+}
+.title {
+    border-bottom: none;
+}
+.table {
+    width: 100%;
+}
+.table td:nth-child(1), .table td:nth-child(3) {
+    width: 20%;
+}
+.table td:nth-child(2) {
+    width: 80%;
+}
+.table td:first-child:empty {
+    border: none;
+}
+
+.no-border {
+    border: none !important;
+}
+
+.table td:not(:empty) {
+    border-top: 1px solid #ddd;
+}
+
+.table td:first-child:not(:empty) {
+    border-bottom: none;
+}
+

@@ -1,0 +1,121 @@
+timestamp: 2023-05-10T23:19:39.851087
+CREATE TABLE "auth_user"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "username" CHAR(512) UNIQUE,
+    "email" CHAR(512) UNIQUE,
+    "password" CHAR(512),
+    "first_name" CHAR(512),
+    "last_name" CHAR(512),
+    "sso_id" CHAR(512),
+    "action_token" CHAR(512),
+    "last_password_change" TIMESTAMP,
+    "past_passwords_hash" TEXT
+);
+success!
+timestamp: 2023-05-10T23:19:39.859067
+CREATE TABLE "auth_user_tag_groups"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "tagpath" CHAR(512),
+    "record_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+timestamp: 2023-05-15T15:17:58.665455
+CREATE TABLE "tasks"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "name" CHAR(512),
+    "description" TEXT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "deadline" TIMESTAMP,
+    "completed" CHAR(1)
+);
+success!
+<<<<<<< HEAD
+timestamp: 2023-06-04T19:56:18.576829
+ALTER TABLE "tasks" ADD "assigned" TEXT;
+success!
+success!
+timestamp: 2023-06-04T19:59:03.702338
+CREATE TABLE "assigned"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "table_id" INTEGER REFERENCES "tasks" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "asignee" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+success!
+timestamp: 2023-06-04T20:19:57.925083
+ALTER TABLE "assigned" ADD "task_id" INTEGER REFERENCES "tasks" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ;
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+success!
+=======
+timestamp: 2023-06-02T15:54:09.687985
+CREATE TABLE "tags"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "name" CHAR(512),
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "color" CHAR(512)
+);
+success!
+timestamp: 2023-06-02T16:09:47.171961
+ALTER TABLE "tasks" ADD "tag" INTEGER REFERENCES "tags" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ;
+>>>>>>> MAIN
+success!
+timestamp: 2023-06-07T02:56:19.343823
+ALTER TABLE "tasks" ADD "tag" INTEGER REFERENCES "tags" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ;
+success!
+success!
+success!
+success!
+timestamp: 2023-06-07T03:27:58.484335
+CREATE TABLE "tags"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "name" CHAR(512),
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "color" CHAR(512)
+);
+success!
+timestamp: 2023-06-07T03:27:58.492481
+CREATE TABLE "tasks"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "name" CHAR(512),
+    "description" TEXT,
+    "user_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "deadline" TIMESTAMP,
+    "completed" CHAR(1),
+    "tag" INTEGER REFERENCES "tags" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+timestamp: 2023-06-07T03:27:58.499068
+CREATE TABLE "assigned"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "asignee" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "task_id" INTEGER REFERENCES "tasks" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!

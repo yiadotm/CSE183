@@ -1,0 +1,362 @@
+<!-- index.html -->
+
+[[extend 'layout.html']]
+<!-- testing terminal -->
+<style>
+    [v-cloak] {
+        display: none;
+    }
+</style>
+
+<div class="section" id="vue-target" v-cloak>
+    <div class="columns">
+        <div class="column">
+            <!-- BLANK -->
+        </div>
+
+        <!-- ADD PAGE-->
+        <div class="column is-three-quarters">
+            <!-- ADD TASK-->
+            <div class="field" v-if="mode == 'add'">
+                <h2 class="title">Add task</h2>
+
+                <!-- TASK NAME -->
+                <div class="field">
+                    <p class="subtitle is-4">Task name:</p>
+                    <input class="input" type="text" placeholder="type task name" v-model="task_name">
+                </div>
+
+                <!-- COMMENTS/DESCRIPTION -->
+                <div class="field">
+                    <p class="subtitle is-4">Description:</p>
+                    <textarea class="textarea" placeholder="what are you going to do?" v-model="task_description" rows="10"></textarea>
+                </div>
+                <div class="field">
+                    <p class="subtitle is-4">Deadline:</p>
+                    <input class="input" type="datetime-local" placeholder="placeholderDateTime" v-model="task_deadline">
+                </div>
+
+                <!-- ASSIGN TASK -->
+                <div class="field">
+                    <p class="subtitle is-4">Assign</p>
+                    <p class="control">
+                        <span class="field" v-for="(user, idx) in users">
+                            <button class="button is-info" v-if="user.selected" v-on:click="assign_user(idx)">
+                                {{user.first_name}}
+                            </button>
+                            <button class="button" v-else v-on:click="assign_user(idx)">
+                                {{user.first_name}}
+                            </button>
+                        </span>
+                    </p>
+                </div>
+
+                <div class="field">
+                    <p class="subtitle is-6 has-text-danger">{{warning}}</p>
+                </div>
+                <div class="field">
+                    <a @click="switch_mode(1)">
+                        <button class="button">Cancel</button>
+                    </a>
+                    <a @click="update()">
+                        <button class="button">Add</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- EDIT A TASK -->
+            <div class="field" v-if="mode == 'edit'">
+                <h2 class="title">Edit task</h2>
+                <div class="field">
+                    <p class="subtitle is-4">Task name:</p>
+                    <input class="input" type="text" v-model="task_name">
+                </div>
+                <div class="field">
+                    <p class="subtitle is-4">Description:</p>
+                    <textarea class="textarea" v-model="task_description" rows="10"></textarea>
+                </div>
+                <div class="field">
+                    <p class="subtitle is-4">Deadline:</p>
+                    <input class="input" type="datetime-local" v-model="task_deadline">
+                </div>
+                <div class="field">
+                    <p class="subtitle is-4">Assign</p>
+                    <p class="control">
+                        <span class="field" v-for="(user, idx) in users">
+                            <button class="button is-info" v-if="user.selected" v-on:click="assign_user(idx)">
+                                {{user.first_name}}
+                            </button>
+                            <button class="button" v-else v-on:click="assign_user(idx)">
+                                {{user.first_name}}
+                            </button>
+                        </span>
+                    </p>
+                </div>
+                <div class="field">
+                    <a @click="switch_mode(1)">
+                        <button class="button">Cancel</button>
+                    </a>
+                    <a @click="update()">
+                        <button class="button">Edit</button>
+                    </a>
+                </div>
+            </div>
+
+            <!-- DETAILS -->
+            <div class="field" v-if="mode == 'detail'">
+                <h1 class="title is-1">{{task_name}}</h1>
+                <textarea class="textarea" readonly>{{ task_description }}</textarea>
+                <p class="subtitle is-6"><b>Assigned to:</b> {{display_assign}}</p>
+                <p class="title is-5">Deadline: {{task_deadline}}</p>
+            </div>
+
+            <!-- USER PAGE -->
+            <div v-if="mode == 'addrole'">
+                <div class="field">
+                    <h2 class="is-size-2">All Users</h2>
+                    <div class="columns is-multiline">
+                        <div class="column is-one-third" v-for="user in users" :key="user.id">
+                            <div class="card">
+                                <div class="card-content">
+                                    <p class="title">{{ user.first_name }} {{ user.last_name }}</p>
+                                    <p class="subtitle">{{ user.email }}</p>
+                                    <button class="button is-info" @click="switch_mode(7, user.id)">Edit Role</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="field">
+                    <button class="button is-link" @click="switch_mode(1)">Back to Home</button>
+                </div>
+            </div>
+
+
+
+            <!-- EDIT USER ROLE PAGE -->
+            <div v-if="mode == 'edituserrole'">
+                <div class="field">
+                    <h2 class="is-size-2">Edit Role</h2>
+                    <div v-if="loading_user">Loading...</div>
+                    <div v-else-if="selected_user">
+                        <div class="card">
+                            <div class="card-content">
+                                <p class="title">{{ selected_user.first_name }} {{ selected_user.last_name }}</p>
+                                <p class="subtitle">{{ selected_user.email }}</p>
+                                <div>
+                                    <label class="label">Current Role: {{ selected_user.role }}</label>
+                                </div>
+                                <div>
+                                    <label class="radio">
+                                        <input type="radio" name="role" value="CEO" v-model="selected_user.role">
+                                        CEO
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="role" value="Manager" v-model="selected_user.role">
+                                        Manager
+                                    </label>
+                                    <label class="radio">
+                                        <input type="radio" name="role" value="User" v-model="selected_user.role">
+                                        User
+                                    </label>
+                                </div>
+                                <div>
+                                    <label class="label">Manager</label>
+                                    <div class="select">
+                                        <select v-model="selected_user.manager_id">
+                                            <option v-for="user in users" :key="user.id" :value="user.id">
+                                                {{ user.first_name }} {{ user.last_name }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="field has-text-danger" v-if="role_warning">
+                            {{ role_warning }}
+                        </div>
+                        <div class="field">
+                            <button class="button" @click="switch_mode(4)">Cancel</button>
+                            <button class="button is-primary" @click="update_user_role">Save</button>
+                        </div>
+                    </div>
+                    <div v-else>
+                        <p>User not found.</p>
+                        <div class="field">
+                            <button class="button is-link" @click="switch_mode(4)">Back to Users</button>
+                        </div>
+                        <div class="field">
+                            <button class="button is-link" @click="switch_mode(1)">Back to Home</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!-- HOME PAGE -->
+            <div v-if="mode == 'table'">
+                <div class="field">
+                    <h2 class="is-size-2">Current Tasks</h2>
+                    <br>
+                    <a class="button is-success" @click="switch_mode(2), get_users()">
+                        <span class="icon"><i class="fa fa-plus"></i></span>
+                        <span>Add</span>
+                    </a>
+                    <a class="button is-primary" @click="switch_mode(4)">
+                        <span class="icon"><i class="fa fa-user"></i></span>
+                        <span>Users</span>
+                    </a>
+                    <br>
+                    <table class="table is-striped is-fullwidth">
+                        <thead>
+                            <tr>
+                                <th>Task Name</th>
+                                <th>Description</th>
+                                <th>Time Remaining</th>
+                                <th>Assigned</th>
+                                <th>Edit</th>
+                                <th>Mark Complete</th>
+                                <th>Add Comment</th>
+                                <th>Comments</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="untask in uncompleted_tasks" :key="untask.id">
+                                <td>{{untask.name}}</td>
+                                <td>
+                                    {{untask.description.slice(0, 20)}}
+                                    <a v-if="untask.description.length > 20" @click="show_detail(untask)">... (detail)</a>
+                                </td>
+                                <td class="has-text-danger" v-if="untask.overdue">
+                                    {{untask.timeleft}}
+                                </td>
+                                <td class="has-text-success" v-else>
+                                    {{untask.timeleft}}
+                                </td>
+                                <td>{{untask.assigned.join(", ")}}</td>
+                                <td>
+                                    <a class="button is-warning" v-on:click="edit_mode(untask)">
+                                        <span class="icon"><i class="fa fa-edit"></i></span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <a class="button is-success" @click="completed(untask.id)">
+                                        <span class="icon"><i class="fa fa-check"></i></span>
+                                    </a>
+                                </td>
+                                <td>
+                                    <input class="input" type="text" placeholder="Add a comment" v-model="untask.new_comment">
+                                    <button class="button is-primary" @click="add_comment(untask)">Add</button>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li v-for="comment in untask.comments" :key="comment.id">
+                                            {{ comment.text }} <br>
+                                            <small>by {{ comment.user_name }} on {{ comment.created_on }}</small>
+                                            <button class="button is-danger is-small" @click="delete_comment(untask, comment)">Delete</button>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td>
+                                    <div class="select">
+                                        <select v-model="untask.status" @change="update_status(untask)">
+                                            <option value="pending">Pending</option>
+                                            <option value="acknowledged">Acknowledged</option>
+                                            <option value="rejected">Rejected</option>
+                                            <option value="completed">Completed</option>
+                                            <option value="failed">Failed</option>
+                                        </select>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="field" v-if="completed_tasks.length != 0">
+                <h2 class="is-size-2">Completed Tasks</h2>
+                <br>
+                <table class="table is-striped is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Task Name</th>
+                            <th>Description</th>
+                            <th>Assigned</th>
+                            <th>Edit</th>
+                            <th>Restore</th>
+                            <th>Add Comment</th>
+                            <th>Comments</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="task in completed_tasks" :key="task.id">
+                            <td>{{task.name}}</td>
+                            <td>
+                                {{task.description.slice(0, 20)}}
+                                <a v-if="task.description.length > 20" @click="show_detail(task)">... (detail)</a>
+                            </td>
+                            <td>{{task.assigned.join(", ")}}</td>
+                            <td>
+                                <a class="button is-warning" v-on:click="edit_mode(task)">
+                                    <span class="icon"><i class="fa fa-edit"></i></span>
+                                </a>
+                            </td>
+                            <td>
+                                <a class="button is-primary" @click="completed(task.id)">
+                                    <span class="icon"><i class="fa fa-plus"></i></span>
+                                </a>
+                            </td>
+                            <td>
+                                <input class="input" type="text" placeholder="Add a comment" v-model="task.new_comment">
+                                <button class="button is-primary" @click="add_comment(task)">Add</button>
+                            </td>
+                            <td>
+                                <ul>
+                                    <li v-for="comment in task.comments" :key="comment.id">
+                                        {{ comment.text }} <br>
+                                        <small>by {{ comment.user_name }} on {{ comment.created_on }}</small>
+                                        <button class="button is-danger is-small" @click="delete_comment(task, comment)">Delete</button>
+                                    </li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    let get_tasks_url = "[[=XML(get_tasks_url)]]";
+    let get_users_url = "[[=XML(get_users_url)]]";
+    let complete_task_url = "[[=XML(complete_task_url)]]";
+    let edit_url = "[[=XML(edit_url)]]";
+    let add_url = "[[=XML(add_url)]]";
+    let save_comment_url = "[[=XML(save_comment_url)]]";
+    let get_comments_url = "[[=XML(get_comments_url)]]";
+    let delete_comment_url = "[[=XML(delete_comment_url)]]"; 
+    let get_user_url = "[[=URL('get_user')]]";  
+    let update_user_role_url = "[[=URL('update_user_role')]]";
+    let update_manager_id_url = "[[=URL('update_manager_id')]]";
+    let test_endpoint_url = "[[=URL('test_endpoint')]]";
+
+    // Define the url_signer function
+    function url_signer(url, params = {}) {
+        let query = Object.keys(params).map(key => `${key}=${encodeURIComponent(params[key])}`).join('&');
+        return `${url}?${query}`;
+    }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sugar/2.0.6/sugar.min.js"></script>
+<script src="js/utils.js"></script>
+<script src="js/index.js"></script>
+
+
+[[end]]

@@ -1,0 +1,100 @@
+[[extend 'layout.html']]
+
+[[block page_menu_items]]
+<a class="navbar-item" href="[[=URL('add_product')]]">Add Product</a>
+[[end]]
+
+<section class="section">
+  <h1 class="title">Your Flows</h1>
+  <table class="table is-striped is-fullwidth">
+    <tr>
+      <th>
+        [[if sort == 'asc1':]]
+        <a class="button" href="[[=URL('index', vars = dict(sort = 'desc1'))]]">
+            <i class="fa fa-sort-desc" aria-hidden="true"></i> Flow
+        </a>
+        [[elif sort == 'desc1':]] 
+        <a class="button" href="[[=URL('index', vars = dict(sort = 'unrecognizable'))]]">
+            <i class="fa fa-sort-asc" aria-hidden="true"></i> Flow
+        </a>  
+        [[else:]] 
+        <a class="button" href="[[=URL('index', vars = dict(sort = 'asc1'))]]">
+            <i class="fa fa-sort"></i> Flow
+        </a>
+        [[pass]]
+      </th>
+      <th>
+        [[if sort == 'asc2':]]
+        <a class="button" href="[[=URL('index', vars = dict(sort = 'desc2'))]]">
+            <i class="fa fa-sort-desc" aria-hidden="true"></i> Vocabulary
+        </a>
+        [[elif sort == 'desc2':]] 
+        <a class="button" href="[[=URL('index', vars = dict(sort = 'unrecognizable'))]]">
+            <i class="fa fa-sort-asc" aria-hidden="true"></i> Vocabulary
+        </a>  
+        [[else:]] 
+        <a class="button" href="[[=URL('index', vars = dict(sort = 'asc2'))]]">
+            <i class="fa fa-sort"></i> Vocabulary
+        </a>
+        [[pass]]
+      </th>
+      <th>
+        [[if sort == 'asc3':]]
+        <a class="button" href="[[=URL('index', vars = dict(sort = 'desc3'))]]">
+            <i class="fa fa-sort-desc" aria-hidden="true"></i> Active
+        </a>
+        [[elif sort == 'desc3':]] 
+        <a class="button" href="[[=URL('index', vars = dict(sort = 'unrecognizable'))]]">
+            <i class="fa fa-sort-asc" aria-hidden="true"></i> Active
+        </a>  
+        [[else:]] 
+        <a class="button" href="[[=URL('index', vars = dict(sort = 'asc3'))]]">
+            <i class="fa fa-sort"></i> Active
+        </a>
+        [[pass]]
+      </th>
+
+      <th>
+          [[if sort == 'asc4':]]
+          <a class="button" href="[[=URL('index', vars = dict(sort = 'desc4'))]]">
+              <i class="fa fa-sort-desc" aria-hidden="true"></i> Created
+          </a>
+          [[elif sort == 'desc4':]] 
+          <a class="button" href="[[=URL('index', vars = dict(sort = 'unrecognizable'))]]">
+              <i class="fa fa-sort-asc" aria-hidden="true"></i> Created
+          </a>  
+          [[else:]] 
+          <a class="button" href="[[=URL('index', vars = dict(sort = 'asc4'))]]">
+              <i class="fa fa-sort"></i> Created
+          </a>
+          [[pass]]
+      </th>
+      <th>
+        <a class="button is-success" href="[[=URL('index', vars = dict(sort = 'unrecognizable'))]]">
+          <i class="is-success">Flow Application</i>
+      </a>
+      </th>
+    </tr>
+    [[for row in rows:]]
+      <td>[[=row.product_name]]</td>
+      <td>[[=row.vocabulary]]</td>
+      <td>[[=row.active]]</td>
+      <td>[[=row.creation_date]]</td>
+      <td>
+        <a class="button is-info" href="[[=URL('edit_product', row.id)]]">
+          <i class="fa fa-fw fa-sticky-note "></i> 
+        </a>
+        <a class="button is-warning" href="[[=URL('edit_phone', row.id)]]">
+          <i class="fa fa-fw fa-pencil "></i>
+        </a>
+        <a class="button is-danger" href="[[=URL('delete_product', row.id, signer = signed_url)]]">
+          <i class="fa fa-trash" aria-hidden="true"></i> 
+        </a>
+      </td>
+    </tr>
+    [[pass]]
+  </table>
+  <a class="button is-primary" href="[[=URL('add_product')]]">
+    <i class="fa fa-plus fa-fw"></i>
+  </a>
+</section>

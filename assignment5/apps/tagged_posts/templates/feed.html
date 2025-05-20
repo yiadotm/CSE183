@@ -1,0 +1,20 @@
+[[extend "layout.html"]]
+
+<!-- <h1 class="title">My Feed</h1> -->
+<div id="app" style="display: flex; justify-content: space-between;">
+    <div style="width: 70%; margin-right: 20px;">
+        [[=form]]
+
+        [[include "posts.html"]]
+    </div>
+
+    <div class="tags" style="width: 30%;">
+        <h2>Tags</h2>
+        <div v-for="tag in tags" :key="tag">
+        <button v-on:click="toggleTag(tag)">
+            {{ tag }}
+        </button>
+        </div>
+    </div>
+</div>
+

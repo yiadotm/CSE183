@@ -1,0 +1,127 @@
+[[extend 'layout.html']]
+
+
+
+  <section class="section" >
+    <div class="title">Flow [[=product_id]]</div>
+  </section>
+  <div id="vue-target">
+    <section class="section">
+      <div class="">
+        <div class=""> 
+          <a class="button is-warning is-size-6" href="[[=URL('index')]]">
+            <i class="fa fa-home fa-fw" ></i>
+          </a>
+        </div>
+      </div>
+    </section>
+  
+
+  <section class="section">
+    <div class="tile is-ancestor" v-for="p in posts">
+      <div class="tile is-vertical">
+        <!-- This div contains each post -->
+        <div class="tile is-child notification is-light">
+          <div class="">
+            <div v-if="mode==p.post_id">
+              <div class="field">
+                <textarea class="textarea" rows = "3" v-model="new_post_text" placeholder="Fill in the step here">{{new_post_text}}</textarea>
+              </div>
+              <button class="button is-primary is-size-6" @click="edit_post(p.post_id);change_mode('no_textarea');">Edit</button>
+              <button @click="change_mode('no_textarea')" class="button is-warning is-size-6">Cancel</button>
+            </div>
+            <div v-if="mode!=p.post_id">{{p.text}}</div>
+            <div class="is-size-6 has-text-grey">{{p.value}}</div>
+          </div>
+          <div class="">
+            <div class="thumbs is-size-4">
+              
+              <span class="has-text-danger is-pulled-right">
+                <i @click="delete_post(p.post_id)" class="fa fa-trash fa-fw"></i>
+              </span>
+              <span class="has-text-info is-pulled-right">
+                <i @click="change_mode(p.post_id)" class="fa fa-edit fa-fw"></i>
+              </span>
+              <span class="has-text-info is-pulled-right">
+                <i @click="insert_post(p.post_id);change_mode(p.post_id)" class="fa fa-arrow-up fa-fw"></i>
+              </span>
+              <div class="is-size-6 has-text-blue">{{p.author}}</div>
+              <!-- <span class="has-text-info"
+              @mouseenter="toggle_ppl_who_liked_post(p._idx, true)"
+              @mouseleave="toggle_ppl_who_liked_post(p._idx, false)">
+                <span>
+                  <i v-if="p.thumbs=='1'"
+                     @click="thumb_cancel(p.post_id, p._idx)"
+                     class="fa fa-flip-horizontal fa-thumbs-up"></i>
+                  <i v-if="p.thumbs!='1'"
+                     @click="thumb_up(p.post_id, p._idx)"
+                     class="fa fa-flip-horizontal fa-thumbs-o-up">
+                  </i>
+                </span>
+                <span>
+                  <i v-if="p.thumbs=='-1'"
+                     @click="thumb_cancel(p.post_id, p._idx)"
+                     class="fa fa-thumbs-down"></i>
+                  <i v-if="p.thumbs!='-1'"
+                     @click="thumb_down(p.post_id, p._idx)"
+                     class="fa fa-thumbs-o-down"></i>
+                </span>
+              </span>
+              <span class="has-text-info" v-if="p.show_ppl_who_liked_post">
+                <span class="is-size-7">
+                  {{get_likers(p._idx, p.post_id)}}{{p.likers}}
+                </span>
+                <span class="is-size-7">
+                  {{get_haters(p._idx, p.post_id)}}{{p.haters}}
+                </span>
+              </span> -->
+            </div>
+          </div>
+        </div>
+        <div class="tile is-primary is-info"> </div>
+      </div>
+      
+    </div>
+  </section>
+  
+  <section class="section">
+    <div class="">
+      <div class="is-fullwidth" v-if="mode=='show_textarea'">
+        <div class="field">
+          <textarea class="textarea is-fullwidth" v-model="new_post_text" placeholder="Enter new step here"></textarea>
+        </div>
+        <button class="button is-primary is-size-6" @click="add_post()">Post</button>
+        <button @click="change_mode('no_textarea')" class="button is-warning is-size-6">Cancel</button>
+        <button @click="copy_posts()" class="button is-info is-size-6">Cp</button>
+      </div>
+      <div v-if="mode!='show_textarea'" >
+        <button @click="change_mode('show_textarea')" class="button is-success is-size-6">
+          <i class="fa fa-plus fa-fw"></i>
+        </button>
+        <a class="button is-warning is-size-6" href="[[=URL('index')]]">
+          <i class="fa fa-home fa-fw" ></i>
+        </a>
+      </div>
+    </div>
+  </section>
+</div>
+
+[[block page_scripts]]
+<!-- Loads the index-specific js for Vue -->
+<script>
+  let copy_posts_url = "[[=XML(copy_posts_url)]]";
+  let get_posts_url = "[[=XML(get_posts_url)]]";
+  let add_post_url = "[[=XML(add_post_url)]]";
+  let thumb_url = "[[=XML(thumb_url)]]";
+  let get_likers_url = "[[=XML(get_likers_url)]]";
+  let get_haters_url = "[[=XML(get_haters_url)]]";
+  let delete_post_url = "[[=XML(delete_post_url)]]";
+  let edit_post_url = "[[=XML(edit_post_url)]]";
+  let send_text_url = "[[=XML(send_text_url)]]";
+  let user_email = "[[=XML(user_email)]]";
+  let username = "[[=XML(username)]]";
+  let insert_post_url = "[[=XML(insert_post_url)]]";
+
+</script>
+<script src="js/index.js"></script>
+[[end]]

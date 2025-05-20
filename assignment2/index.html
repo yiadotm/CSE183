@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2023 Simplified Tax Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+
+</head>
+
+    <body>
+        <header>
+            <div class="card-header-title">
+                <h1 class="title">2023 Simplified Tax Form</h1>
+            </div>
+        </header>
+        <form>
+            <table class="table">
+
+                <tbody>
+                    <tr class="row-1">
+                        <td>
+                            Income
+                        </td>
+                        <td>
+                            <strong>1</strong> Wages, salaries, and tips. This should be shown in box 1 of your Forms(s) W-2. Attach your Form(s) W-2.
+                        </td>
+                        <td>
+                            <input class="input" type="number" id="value-1" name="value-1" class="input" oninput="calculateValues()">
+                        </td>
+                    </tr>
+                    <tr class="row-2">
+                        <td class="no-border">
+                            
+                        </td>
+                        <td>
+                            <label><strong>2</strong> Taxable interest from 1099 forms</label>
+                        </td>
+                        <td>
+                            <input type="number" id="value-2" name="value-2" class="input" oninput="calculateValues()">
+                        </td>
+                    </tr>
+                    
+                    <tr class="row-3">
+                        <td class="no-border">
+                            
+                        </td>
+                        <td>
+                            <label><strong>3</strong> Other Incomes not included in 1 and 2. </label>
+                        </td>
+                        <td>
+                            <input type="number" id="value-3" name="value-3" class="input" oninput="calculateValues()">
+                        </td>
+                    </tr>
+                    <tr class="row-4">
+                        <td class="no-border">
+                            
+                        </td>
+                        <td>
+                            <label><strong>4</strong> Add lines 1, 2, and 3. This is your adjusted gross income. </label>
+                        </td>
+                        <td>
+                            <input type="number" id="value-4" name="value-4" readonly>
+                        </td>
+                    </tr>
+                    <tr class="row-5">
+                        <td class="no-border">
+                            
+                        </td>
+                        <td>
+                            <label><strong>5</strong> If this is a join return, add your spouse as a dependent. Write $13,850 for an individual return and $27,700 for a joint return. <br /> Spouse  <input type="checkbox" id="spouse" name="spouse" onclick="calculateValues()"></label>
+                        </td>
+
+                     
+                        <td>
+                            <input type="number" id="value-5" name="value-5" value="13850" readonly>
+                        </td>
+                      
+                    </tr>
+                  
+                    <tr class="row-6">
+                        <td class="no-border">
+                            
+                        </td>
+                        <td>
+                            <label><strong>6</strong> Subtract line 5 from line 4. If line 5 is larger than line 4, enter -0-. This is your taxable income. </label>
+                        </td>
+                        <td>
+                            <input type="number" id="value-6" name="value-6" readonly>
+                        </td>
+                    </tr>
+
+                    <tr class="row-7">
+                        <td>
+                            Payments, Credits, and Tax
+                        </td>
+                        <td>
+                            <label><strong>7</strong> Federal income tax withheld from Form(s) W-2 and 1099. </label>
+                        </td>
+                        <td>
+                            <input type="number" id="value-7" name="value-7" class="input" oninput="calculateValues()">
+                        </td>
+                    </tr>
+
+                    <tr class="row-8">
+                        <td class="no-border">
+                            
+                        </td>
+                        <td>
+                            <label><strong>8</strong> Earned income credit (EIC) </label>
+                        </td>
+                        <td>
+                            <input type="number" id="value-8" name="value-8" class="input" oninput="calculateValues()">
+                        </td>
+                    </tr>
+
+                    <tr class="row-9">
+                        <td class="no-border">
+                            
+                        </td>
+                        <td>
+                            <label><strong>9</strong> Add lines 7 and 8a. These are your total payments and credits. </label>
+                        </td>
+                        <td>
+                            <input type="number" id="value-9" name="value-9" readonly>
+                        </td>
+                    </tr>
+
+                    <tr class="row-10">
+                        <td class="no-border">
+                            
+                        </td>
+                        <td>
+                            <label><strong>10</strong> Tax. Use the amount on line 6 above to find your tax in the tax table in the instructions. Then, enter the tax from the table on this line.  </label>
+                        </td>
+                        <td>
+                            <input type="number" id="value-10" name="value-10" readonly>
+                        </td>
+                    </tr>
+
+                    <tr class="row-11">
+                        <td class="no-border">
+                        </td>
+                        <td>
+                            <label><strong>11</strong> Other Taxes </label>
+                        </td>
+                        <td>
+                            <input type="number" id="value-11" name="value-11" class="input" oninput="calculateValues()">
+                        </td>
+                    </tr>
+
+                    <tr class="row-12">
+                        <td class="no-border">
+
+                        </td>
+                        <td>
+                            <label><strong>12</strong> Add lines 10 and 11. This your total tax. </label>
+                        </td>
+                        <td>
+                            <input type="number" id="value-12" name="value-12" class="input" readonly>
+                        </td>
+                    </tr>
+
+                    <tr class="row-13">
+                        <td>
+                            Refund
+                        </td>
+                        <td>
+                            <label><strong>13</strong> If line 9 is larger than line 12, subtract line 12 from line 9. This is your refund. If Form 8888 is attached, check here.</label>
+                        </td>
+                        <td>
+                            <input type="number" id="value-13" name="value-13" readonly>
+                        </td>
+                    </tr>
+
+                    <tr class="row-14">
+                        <td>
+                            Amount you owe
+                        </td>
+                        <td>
+                            <label><strong>14</strong> If line 12 is larger than line 9, subtract line 9 from line 12. This is the amount you owe. For details on how to pay, see instructions. </label>
+                        </td>
+                        <td>
+                            <input type="number" id="value-14" name="value-14" readonly>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+        </form>
+        <script src="tax.js"></script>
+    </body>
+
+</html>

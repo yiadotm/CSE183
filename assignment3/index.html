@@ -1,0 +1,34 @@
+<!-- referenced this website: https://dev.to/diseyi/implementing-tic-tac-toe-in-vue-57go -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic Tac Toe</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@3/dist/vue.global.prod.js"></script>
+    
+</head>
+<body>
+    <div id="app">
+        <h1>Tic Tac Toe Game</h1>
+        <table class="board">
+            <tr v-for="(row, rowIndex) in board" :key="rowIndex">
+                <td v-for="(cell, cellIndex) in row" :key="cellIndex" class="cell">
+                    <button @click="makeMove(rowIndex, cellIndex)"
+                        :class="['cell-' + rowIndex + '-' + cellIndex, { 'cell-x': cell === 'X', 'cell-o': cell === 'O' }]"
+                        :disabled="cell !== ''">
+                        {{ cell }}
+                    </button>
+                </td>
+            </tr>
+        </table>
+        <p v-if="winner">{{ winner }} wins!</p>
+        <p v-else-if="isTie">It's a tie!</p>
+        <button class="reset" @click="reset">Reset Game</button>    </div>
+    <script src="tictactoe.js"></script>
+</body>
+</html>
+
+
+

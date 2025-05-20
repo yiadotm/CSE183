@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2023 Simplified Tax Form</title>
+</head>
+<body>
+    <section class="section">
+        <div class="container">
+            <table class="table is-bordered">
+                <thead>
+                    <tr>
+                        <th class="has-text-centered" colspan="3">2023 Simplified Tax Form</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td rowspan="4" class="has-text-centered">Income</td>
+                        <td><strong>1</strong> Wages, salaries, and tips</td>
+                        <td><input class="input" type="number" id="value-1" name="value-1" value="100000"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong> Taxable interest from 1099 forms</td>
+                        <td><input class="input" type="number" id="value-2" name="value-2" value="20000"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong> Other Income not included in 1 and 2</td>
+                        <td><input class="input" type="number" id="value-3" name="value-3" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong> Total income (Add lines 1, 2, and 3)</td>
+                        <td><input class="input" type="number" id="value-4" name="value-4" readonly></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" class="has-text-centered">Payments, Credits, and Tax</td>
+                        <td><strong>5</strong> Federal income tax withheld from Form(s) W-2 and 1099</td>
+                        <td><input class="input" type="number" id="value-7" name="value-7"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>8</strong> Earned income credit (EIC)</td>
+                        <td><input class="input" type="number" id="value-8" name="value-8" value="0"></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="4" class="has-text-centered">Tax</td>
+                        <td><strong>9</strong> Add lines 7 and 8a. These are your total payments and credits</td>
+                        <td><input class="input" type="number" id="value-9" name="value-9" readonly></td>
+                    </tr>
+                    <tr>
+                        <td><strong>10</strong> Tax. Use the amount on line 6 above to find your tax in the tax table in the instructions. Then, enter the tax from the table on this line</td>
+                        <td><input class="input" type="number" id="value-10" name="value-10" readonly></td>
+                    </tr>
+                    <tr>
+                        <td><strong>11</strong> Other Taxes</td>
+                        <td><input class="input" type="number" id="value-11" name="value-11" value="1000"></td>
+                    </tr>
+                    <tr>
+                        <td><strong>12</strong> Add lines 10 and 11. This is your total tax</td>
+                        <td><input class="input" type="number" id="value-12" name="value-12" readonly></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2" class="has-text-centered">Refund</td>
+                        <td><strong>13</strong> If line 9 is larger than line 12, subtract line 12 from line 9. This is your refund. If Form 8888 is attached, check here</td>
+                        <td><input class="input" type="number" id="value-13" name="value-13" readonly></td>
+                    </tr>
+                    <tr>
+                        <td><strong>14</strong> Amount you owe. For details on how to pay, see instructions</td>
+                        <td><input class="input" type="number" id="value-14" name="value-14" readonly></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</body>

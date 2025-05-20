@@ -1,0 +1,96 @@
+timestamp: 2024-05-14T17:14:43.200327
+CREATE TABLE "auth_user"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "username" CHAR(512) UNIQUE,
+    "email" CHAR(512) UNIQUE,
+    "password" CHAR(512),
+    "first_name" CHAR(512),
+    "last_name" CHAR(512),
+    "sso_id" CHAR(512),
+    "action_token" CHAR(512),
+    "last_password_change" TIMESTAMP,
+    "past_passwords_hash" TEXT
+);
+success!
+timestamp: 2024-05-14T17:14:43.227642
+CREATE TABLE "auth_user_tag_groups"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "tagpath" CHAR(512),
+    "record_id" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+timestamp: 2024-05-14T17:14:43.252663
+CREATE TABLE "keow"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "keow_content" TEXT,
+    "user_email" CHAR(512),
+    "created_on" TIMESTAMP
+);
+success!
+timestamp: 2024-05-14T17:14:43.273148
+CREATE TABLE "thumb"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "keow_id" INTEGER REFERENCES "keow" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "rater" CHAR(512),
+    "thumb" INTEGER
+);
+success!
+timestamp: 2024-05-16T13:36:20.314202
+CREATE TABLE "post_item"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "content" TEXT,
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "modified_on" TIMESTAMP,
+    "modified_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "is_active" CHAR(1)
+);
+success!
+timestamp: 2024-05-16T13:36:20.370558
+CREATE TABLE "tag_item"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "name" CHAR(512),
+    "post_item_id" INTEGER REFERENCES "post_item" ("id") ON DELETE CASCADE ON UPDATE CASCADE  
+);
+success!
+timestamp: 2024-05-16T14:08:24.779034
+CREATE TABLE "feed_item"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "body" TEXT,
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "modified_on" TIMESTAMP,
+    "modified_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "is_active" CHAR(1)
+);
+success!
+timestamp: 2024-05-16T14:08:24.811358
+CREATE TABLE "item_like"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "item_id" INTEGER REFERENCES "feed_item" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "created_on" TIMESTAMP,
+    "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "modified_on" TIMESTAMP,
+    "modified_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "is_active" CHAR(1)
+);
+success!
+timestamp: 2024-05-16T14:08:24.832541
+CREATE TABLE "friend_request"(
+    "id" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "from_user" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "to_user" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ,
+    "status" CHAR(512)
+);
+success!
+timestamp: 2024-05-16T14:59:50.430796
+ALTER TABLE "tag_item" ADD "created_on" TIMESTAMP;
+timestamp: 2024-05-16T14:59:50.456757
+ALTER TABLE "tag_item" ADD "created_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ;
+timestamp: 2024-05-16T14:59:50.470830
+ALTER TABLE "tag_item" ADD "modified_on" TIMESTAMP;
+timestamp: 2024-05-16T14:59:50.493323
+ALTER TABLE "tag_item" ADD "modified_by" INTEGER REFERENCES "auth_user" ("id") ON DELETE CASCADE ON UPDATE CASCADE  ;
+timestamp: 2024-05-16T14:59:50.507474
+ALTER TABLE "tag_item" ADD "is_active" CHAR(1);
+success!
